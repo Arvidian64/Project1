@@ -1,0 +1,52 @@
+services:
+  flask-server:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./readings.db:/app/readings.db # Persist your SQLite DB
+    networks:
+      - sensor-net
+
+  hadoop-worker:
+    build: ./hadoop
+    container_name: hadoop-analysis
+    depends_on:
+      - flask-server
+    networks:
+      - sensor-net
+
+  # Defines each sensor using the same Dockerfile with different start commands
+  air-quality-sensor:
+    build:
+      context: .
+      dockerfile: Dockerfile.sensor
+    volumes:
+      - ./sensors/air_quality:/app
+    command: python air_quality.py
+    networks:
+      - sensor-net
+
+  co2-sensor:
+    build:
+      context: .
+      dockerfile: Dockerfile.sensor
+    volumes:
+      - ./sensors/co2:/app
+    command: python co2.py
+    networks:
+      - sensor-net
+
+  temperature-sensor:
+    build:
+      context: .
+      dockerfile: Dockerfile.sensor
+    volumes:
+      - ./sensors/temperature:/app
+    command: python temperature.py
+    networks:
+      - sensor-net
+
+networks:
+  sensor-net:
+    driver: bridge
