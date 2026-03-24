@@ -2,7 +2,7 @@ import requests
 from mapper import run_mapper
 from reducer import run_reducer
 
-url = "http://server"
+url = "http://flask-server:8080/measurements"
 x_lat = 60.0971
 y_lon = 19.9348
 max_dist = 400
@@ -36,5 +36,5 @@ def main(local=False):
         print(f"{sensor}\tmin={min_val}, max={max_val}, avg={avg_val:.2f}")
 
 if __name__ == "__main__":
-    main(local=True)
+    main()
 
