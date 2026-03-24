@@ -19,13 +19,13 @@ def temp(sensor_id, value, timestamp):
 
     return temp
 
-url = "http://127.0.0.1:8080/measurements"
+url = "http://flask-server:8080/measurements"
 
 while True: 
     try:
         sensor_id = 14
         value = random.randint(-20, 50)
-        timestamp = datetime.utcnow().strftime("%-%-% | %-%")
+        timestamp = datetime.utcnow().strftime("%Y-%m-%d | %H:%M")
         data = temp(sensor_id, value, timestamp)
         response = requests.post(url, json=data)
         time.sleep(2)

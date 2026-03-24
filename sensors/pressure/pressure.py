@@ -19,13 +19,13 @@ def pressure_sensor(sensor_id, value, timestamp):
 
     return pressure
 
-url = "http://127.0.0.1:8080/measurements"
+url = "http://flask-server:8080/measurements"
 
 while True: 
     try:
         sensor_id = 12
         value = random.randint(120, 180)
-        timestamp = date_and_time.now(datetime.datetime.utc).strftime("Y%-m%-d% | %M-%S")
+        timestamp = date_and_time.now(datetime.datetime.utc).strftime("%Y-%m-%d | %H:%M")
         data = pressure_sensor(sensor_id, value, timestamp)
         response = requests.post(url, json=data, timeout=5)
         print(response.json())
