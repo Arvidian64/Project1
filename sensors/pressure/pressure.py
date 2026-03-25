@@ -17,7 +17,7 @@ def sensor(sensor_id, value, timestamp):
 
     return pressure
 
-url = "http://127.0.0.1:5000/measurements"
+url = "http://flask-server:5000/measurements"
 
 while True: 
     try:
