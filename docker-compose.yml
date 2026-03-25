@@ -2,7 +2,7 @@ services:
   flask-server:
     build: .
     ports:
-      - "8080:8080"
+      - "8081:5000"
     volumes:
       - ./readings.db:/app/readings.db # Persist your SQLite DB
     networks:

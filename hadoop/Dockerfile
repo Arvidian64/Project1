@@ -6,4 +6,4 @@ RUN pip install --no-cache-dir requests
 
 COPY . .
 
-CMD["python", "hadoop.py"]
+CMD ["python3", "hadoop.py"]

@@ -6,9 +6,9 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY server.py
-COPY relational_database.py
+COPY server.py server.py
+COPY relational_database.py relational_database.py
 
-EXPOSE 8080
+EXPOSE 5000
 
-CMD ["python", "-u", "server.py"
+CMD ["python3", "-u", "server.py"]
