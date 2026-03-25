@@ -4,13 +4,13 @@ import relational_database as database
 
 app = Flask(__name__)
 
-conn = database.sql.connect('readings.db')
-conn.execute("PRAGMA foreign_keys = ON")
-database.setup_database(conn)
+with database.sql.connect('readings.db') as conn:
+    conn.execute("PRAGMA foreign_keys = ON")
+database.setup_database()
 
 @app.route('/measurements', methods=['POST'])
 def recieve_measurement():
-    data = request.get_json()
+    data = request.get_json().copy()
 
     # Data validation
     required_keys = ["sensor_id", "value"]
@@ -21,7 +21,7 @@ def recieve_measurement():
     timestamp = data.get("timestamp") or datetime.time()
 
     try:
-        database.add_measurement(conn, timestamp, data["sensor_id"], data["value"])
+        database.add_measurement(timestamp, data["sensor_id"], data["value"])
         return jsonify({"status": "success"}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -29,7 +29,7 @@ def recieve_measurement():
 @app.route('/hadoop', methods=['GET'])
 def get_measurements():
     try:
-        rows = database.display_measurements(conn)
+        rows = database.display_measurements()
 
         data = []
         for row in rows:
@@ -50,12 +50,31 @@ def get_measurements():
 
 @app.route('/measurements_table', methods=["GET"])
 def display_measurements():
-    result = database.display_measurements(conn)
-    html = ""
-    for i in result:
-        html = html + "<tr>" + i + "</tr>"
+    result = database.display_measurements()
+
+    grouped_data = {}
+    for row in result:
+        # row[5] is the sensor_type from your query
+        s_type = row[5]
+        if s_type not in grouped_data:
+            grouped_data[s_type] = []
+        grouped_data[s_type].append(row)
+
+    html = "<html><head><style>table{width:100%; border-collapse:collapse; margin-bottom:20px;} th,td{border:1px solid #ddd; padding:8px;}</style></head><body>"
+    html += "<h1>Sensor Measurements by Type</h1>"
+
+    for s_type, rows in grouped_data.items():
+        html += f"### {s_type} Readings"
+        html += "<table><thead><tr><th>Time</th><th>Value</th><th>Unit</th><th>Lat</th><th>Lon</th></tr></thead><tbody>"
+
+        for r in rows:
+            html += f"<tr><td>{r[0]}</td><td>{r[1]}</td><td>{r[2]}</td><td>{r[3]}</td><td>{r[4]}</td></tr>"
+
+        html += "</tbody></table>"
+
+    html += "</body></html>"
     return html
 
 if __name__ == '__main__':
-    app.run(host="127.0.0.1", port=8080, debug=True, threaded=True)
+    app.run(host="127.0.0.1", port=5000, debug=True, threaded=False)
 

@@ -5,11 +5,11 @@ import random
 
 date_and_time = datetime.datetime
 
-def air_quality(sensor_id, value, timestamp):
+def sensor(sensor_id, value, timestamp):
 
     air = {
         "sensor_id": sensor_id,
-        "type": "air quality",
+        "type": "Air Quality",
         "unit": "PM10",
         "value": value,
         "timestamp": timestamp
@@ -17,18 +17,17 @@ def air_quality(sensor_id, value, timestamp):
 
     return air
 
-url = "http://flask-server:8080/measurements"
+url = "http://flask-server:5000/measurements"
 
 while True: 
     try:
         sensor_id = 13
         value = random.randint(0, 500)
-        timestamp = datetime.utcnow().strftime("%Y-%m-%d | %H:%M")
-        data = air_quality(sensor_id, value, timestamp)
+        timestamp = date_and_time.now().strftime("%Y-%m-%d | %H:%M:%S")
+        data = sensor(sensor_id, value, timestamp)
         response = requests.post(url, json=data)
-        time.sleep(2)
+        time.sleep(5)
 
     except Exception as e:
 
-        print("STOPPED")
-        break 
+        print("STOPPED", e)
