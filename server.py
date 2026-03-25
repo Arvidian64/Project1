@@ -48,6 +48,43 @@ def get_measurements():
     except Exception as e:
         return jsonify({"Data retrieval error": str(e)}), 500
 
+
+@app.route('/hadoop_results', methods=['POST'])
+def receive_hadoop_results():
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "No data received"}), 400
+    try:
+        database.save_hadoop_results(data)
+        return jsonify({"status": "results saved"}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/hadoop_table', methods=['GET'])
+def display_hadoop_table():
+    results = database.query_database("SELECT * FROM processed_results")
+
+    html = """
+    <html>
+    <head><style>
+        table { border-collapse: collapse; width: 50%; margin: 20px; font-family: sans-serif; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #4CAF50; color: white; }
+        tr:nth-child(even) { background-color: #f2 f2 f2; }
+    </style></head>
+    <body>
+        <h2>Hadoop MapReduce Results</h2>
+        <table>
+            <tr><th>Sensor</th><th>Min</th><th>Max</th><th>Average</th><th>Processed At</th></tr>
+    """
+
+    for row in results:
+        html += f"<tr><td>{row[0]}</td><td>{row[1]}</td><td>{row[2]}</td><td>{row[3]:.2f}</td><td>{row[4]}</td></tr>"
+
+    html += "</table></body></html>"
+    return html
+
 @app.route('/measurements_table', methods=["GET"])
 def display_measurements():
     result = database.display_measurements()
