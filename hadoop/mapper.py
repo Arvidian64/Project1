@@ -1,5 +1,11 @@
+#!/usr/bin/env python3
+
+import sys
 import math
 
+x_lat = 60.0971
+y_lon = 19.9348
+max_dist = 4000  # km
 
 def haversine_dist(lat1, lon1, lat2, lon2):
     lat1_rad, lon1_rad = math.radians(lat1), math.radians(lon1)
@@ -10,9 +16,9 @@ def haversine_dist(lat1, lon1, lat2, lon2):
     return 6371.0 * 2 * math.atan2(math.sqrt(a), math.sqrt(1.0 - a))
 
 
-def run_mapper(data_list, x_lat, y_lon, max_dist):
+def run_mapper():
     mapped_result = []
-    for line in data_list:
+    for line in sys.stdin:
         line = line.strip()
         if not line:
             continue
@@ -26,8 +32,10 @@ def run_mapper(data_list, x_lat, y_lon, max_dist):
             val = float(parts[6])
 
             dist = haversine_dist(x_lat, y_lon, lat, lon)
+
             if dist <= max_dist:
-                mapped_result.append((sensor, val))
+                print(f"{sensor}\t{val}")
+
         except (IndexError, ValueError):
             continue
 

@@ -1,35 +1,48 @@
-def run_reducer(mapped_data):
-    """
-    Expects a list of tuples: [(sensor, value), ...]
-    The list MUST be sorted by sensor name first.
-    """
-    results = []
+#!/usr/bin/env python3
+
+import sys
+
+def run_reducer():
+    #Reads from stdin and looks for changes in the key sensor_id
     current_sensor = None
     count = 0
     total = 0
     min_val = None
     max_val = None
 
-    for sensor, value in mapped_data:
-        # Core logic from original reducer
-        if current_sensor == sensor:
-            count += 1
-            total += value
-            min_val = min(min_val, value)
-            max_val = max(max_val, value)
-        else:
-            if current_sensor is not None:
-                results.append((current_sensor, min_val, max_val, total / count))
+    for line in sys.stdin:
+        line = line.strip()
+        if not line:
+            continue
 
-            current_sensor = sensor
-            count = 1
-            total = value
-            min_val = value
-            max_val = value
+        try:
+            sensor, value_str = line.split("\t",1)
+            value = float(value_str)
+        except ValueError:
+            continue
+
+    if current_sensor == sensor:
+        count += 1
+        total += value
+        min_val = min(min_val, value)
+        max_val = max(max_val, value)
+    else:
+        if current_sensor is not None:
+            if count > 0:
+                avg_val = total / count
+                print(f"{current_sensor}\t{min_val}\t{max_val}\t{avg_val:.2f}")
+
+        current_sensor = sensor
+        count = 1
+        total = value
+        min_val = value
+        max_val = value
 
     if current_sensor is not None:
-        results.append((current_sensor, min_val, max_val, total / count))
+        if count > 0:
+            avg_val = total / count
+            print(f"{current_sensor}\t{min_val}\t{max_val:.2f}")
 
-    return results
 
-    
+if __name__ == "__main__":
+    run_reducer()

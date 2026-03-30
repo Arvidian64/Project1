@@ -3,6 +3,8 @@ import time
 from mapper import run_mapper
 from reducer import run_reducer
 
+# Now likely deprecated. Will remove later
+
 url = "http://flask-server:5000/hadoop"
 x_lat = 60.0971
 y_lon = 19.9348
