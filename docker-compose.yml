@@ -4,19 +4,23 @@ services:
     ports:
       - "8081:5000"
     volumes:
-      - ./readings.db:/app/readings.db # Persist your SQLite DB
+      - ./readings.db:/app/readings.db
     networks:
       - sensor-net
 
   hadoop-worker:
-    build: ./hadoop
+    build:
+      context: ./hadoop
+      dockerfile: Dockerfile
     container_name: hadoop-analysis
     depends_on:
       - flask-server
+    environment:
+      - SERVER_URL=http://flask-server:5000/hadoop
+      - RESULTS_URL=http://flask-server:5000/hadoop_results
     networks:
       - sensor-net
 
-  # Defines each sensor using the same Dockerfile with different start commands
   air-quality-sensor:
     build:
       context: .

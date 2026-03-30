@@ -1,9 +1,12 @@
-FROM python:3.9-slim
+FROM bde2020/hadoop-base:2.0.0-hadoop2.7.4-java8
 
 WORKDIR /app
 
-RUN pip install --no-cache-dir requests
+RUN apt-get update && apt-get install -y python3 python3-pip curl && \
+    pip3 install requests
 
-COPY . .
+COPY mapper.py reducer.py run_job.sh ./
 
-CMD ["python3", "hadoop.py"]
+RUN chmod +x mapper.py reducer.py run_job.sh
+
+CMD ["./run_job.sh"]
