@@ -1,5 +1,3 @@
-import json
-import time
 import requests
 import datetime
 import time
@@ -30,5 +28,4 @@ while True:
         time.sleep(5)
 
     except Exception as e:
-
         print("STOPPED", e)
