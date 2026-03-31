@@ -5,6 +5,7 @@ import sys
 def run_reducer():
     #Reads from stdin and looks for changes in the key sensor_id
     current_sensor = None
+    sensor = None
     count = 0
     total = 0
     min_val = None
