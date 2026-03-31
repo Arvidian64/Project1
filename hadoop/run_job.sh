@@ -8,7 +8,7 @@ LOCAL_DATA_FILE="local_sensor_data.csv"
 HADOOP_OUTPUT_DIR="hadoop_output"
 
 # Remember to check that this directory is correct
-HADOOP_STREAMS_JAR="/usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-*.jar"
+HADOOP_STREAMS_JAR="/opt/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.7.4.jar"
 
 while true; do
   echo "--- Starting new job iteration ---"
@@ -40,7 +40,7 @@ while true; do
       COMBINED_RESULTS_FILE="final_stats.txt"
       cat "${HADOOP_OUTPUT_DIR}"/part-* > "${COMBINED_RESULTS_FILE}"
 
-      # Print results locally
+      # Prints results locally
       while IFS=$'\t' read -r sensor min val max val avg val; do
         echo -e "$sensor\tmin=$min, max=$max, avg=$avg"
       done < "${COMBINED_RESULTS_FILE}"
