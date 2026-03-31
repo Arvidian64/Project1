@@ -31,9 +31,9 @@ def run_mapper():
         
         try:
             sensor = parts[1].strip().replace('"', '')
-            lat = float(parts[3]).replace('"', '')
-            lon = float(parts[4]).replace('"', '')
-            val = float(parts[6]).replace('"', '')
+            lat = float(parts[3].replace('"', ''))
+            lon = float(parts[4].replace('"', ''))
+            val = float(parts[6].replace('"', ''))
 
             dist = haversine_dist(x_lat, y_lon, lat, lon)
 
