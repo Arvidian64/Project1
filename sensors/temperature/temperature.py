@@ -3,16 +3,14 @@ import datetime
 import time 
 import random
 
-from sensors.pressure.pressure import date_and_time
-
 date_and_time = datetime.datetime
 
 def temp(sensor_id, value, timestamp):
 
     temp = {
         "sensor_id": sensor_id,
-        "type": "temperature",
-        "unit": "C",
+        "type": "Temperature Sensor",
+        "unit": "°C",
         "value": value,
         "timestamp": timestamp 
     }
@@ -28,8 +26,8 @@ while True:
         timestamp = date_and_time.now().strftime("%Y-%m-%d | %H:%M:%S")
         data = temp(sensor_id, value, timestamp)
         response = requests.post(url, json=data)
-        time.sleep(5)
 
     except Exception as e:
 
         print("STOPPED", e)
+    time.sleep(5)
