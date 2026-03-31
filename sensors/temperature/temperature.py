@@ -3,8 +3,6 @@ import datetime
 import time 
 import random
 
-from sensors.pressure.pressure import date_and_time
-
 date_and_time = datetime.datetime
 
 def temp(sensor_id, value, timestamp):
