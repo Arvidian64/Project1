@@ -45,10 +45,10 @@ def setup_database():
                         sensor_type TEXT NOT NULL REFERENCES sensortypes(sensor_type)
                         )''')
 
-    add_sensor(11, 41.7, 19.4, "CO2 Sensor")
-    add_sensor(12, 67.4, 22.6, "Pressure Sensor")
+    add_sensor(11, 43.7, 19.4, "CO2 Sensor")
+    add_sensor(12, 67.4, 21.6, "Pressure Sensor")
     add_sensor(13, 49.4, 28.7, "Air Quality Sensor")
-    add_sensor(14, 34.4, 37.2, "Temperature Sensor")
+    add_sensor(14, 37.4, 39.2, "Temperature Sensor")
 
     query_database('''CREATE TABLE IF NOT EXISTS measurements
                          (sensor_timestamp TEXT NOT NULL PRIMARY KEY,

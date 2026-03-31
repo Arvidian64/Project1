@@ -5,7 +5,7 @@ import math
 
 x_lat = 60.0971
 y_lon = 19.9348
-max_dist = 4000  # km
+max_dist = 12800  # km
 
 def haversine_dist(lat1, lon1, lat2, lon2):
     lat1_rad, lon1_rad = math.radians(lat1), math.radians(lon1)
@@ -17,19 +17,23 @@ def haversine_dist(lat1, lon1, lat2, lon2):
 
 
 def run_mapper():
-    mapped_result = []
     for line in sys.stdin:
         line = line.strip()
         if not line:
             continue
 
-            # Parsing logic from original mapper
+            # Parsing logic
+
+        parts = line.split(",")
+
+        if len(parts) < 7:
+            continue
+        
         try:
-            parts = line.split(",")
-            sensor = parts[1]
-            lat = float(parts[3])
-            lon = float(parts[4])
-            val = float(parts[6])
+            sensor = parts[1].strip().replace('"', '')
+            lat = float(parts[3].replace('"', ''))
+            lon = float(parts[4].replace('"', ''))
+            val = float(parts[6].replace('"', ''))
 
             dist = haversine_dist(x_lat, y_lon, lat, lon)
 
@@ -39,5 +43,6 @@ def run_mapper():
         except (IndexError, ValueError):
             continue
 
-    return mapped_result
 
+if __name__ == "__main__":
+    run_mapper()
