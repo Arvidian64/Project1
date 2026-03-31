@@ -5,7 +5,6 @@ import sys
 def run_reducer():
     #Reads from stdin and looks for changes in the key sensor_id
     current_sensor = None
-    sensor = None
     count = 0
     total = 0.0
     min_val = None
@@ -48,7 +47,7 @@ def run_reducer():
     if current_sensor is not None:
         if count > 0:
             avg_val = total / count
-            print(f"{current_sensor}\t{min_val}\t{max_val:.2f}")
+            print(f"{current_sensor}\t{min_val}\t{max_val}\t{avg_val:.2f}")
 
 
 if __name__ == "__main__":
