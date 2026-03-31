@@ -9,8 +9,8 @@ def temp(sensor_id, value, timestamp):
 
     temp = {
         "sensor_id": sensor_id,
-        "type": "temperature",
-        "unit": "C",
+        "type": "Temperature Sensor",
+        "unit": "°C",
         "value": value,
         "timestamp": timestamp 
     }
