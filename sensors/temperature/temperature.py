@@ -26,8 +26,8 @@ while True:
         timestamp = date_and_time.now().strftime("%Y-%m-%d | %H:%M:%S")
         data = temp(sensor_id, value, timestamp)
         response = requests.post(url, json=data)
-        time.sleep(5)
 
     except Exception as e:
 
         print("STOPPED", e)
+    time.sleep(5)
